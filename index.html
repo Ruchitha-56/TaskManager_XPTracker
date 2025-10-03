@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager XP Tracker</title>
+    <!-- Google Fonts - Futuristic/Gaming Vibe -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="welcome-screen active">
+        <h1 class="welcome-title"><span class="neon-text-main">Welcome, Commander!</span></h1>
+        <p class="welcome-message">Your daily missions are waiting. Conquer them to level-up your productivity and unlock success.</p>
+
+        <div class="welcome-steps">
+            <h2 class="welcome-steps-title">🛡️ Steps to Success</h2>
+            <ul class="welcome-steps-list">
+                <li>Plan your missions every morning.</li>
+                <li>Prioritize by impact: <span class="priority-high">🔴 High</span> → <span class="priority-medium">🟠 Medium</span> → <span class="priority-low">🟢 Low</span>.</li>
+                <li>Focus and complete one task at a time.</li>
+                <li>Track your XP bar—watch success in real time.</li>
+                <li>Review & celebrate your victories each night.</li>
+            </ul>
+        </div>
+
+        <button id="enter-app-button" class="neon-button">Enter Mission Control <i class="fas fa-arrow-circle-right"></i></button>
+
+        <footer class="welcome-footer">
+            Made with <i class="fas fa-bolt neon-text-main"></i> by You — v1.0
+        </footer>
+    </div>
+
+    <!-- Main Task Manager Container (Initially Hidden) -->
+    <div id="task-manager-container" class="container hidden">
+        <header class="app-header">
+            <h1><span class="neon-text-main">Mission Log: XP Tracker</span></h1>
+            <button id="theme-toggle" class="icon-button theme-toggle-button" aria-label="Toggle light and dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <section class="xp-bar-section">
+            <div class="xp-bar-container">
+                <div class="xp-bar-fill" style="width: 0%;"></div>
+                <span class="xp-bar-text">0% Completed (Overall)</span> <!-- Updated text -->
+            </div>
+        </section>
+
+        <!-- New: View Mode Toggle -->
+        <div class="view-mode-toggle-container">
+            <button id="show-active-missions-btn" class="neon-button active view-mode-btn">
+                <i class="fas fa-list-check"></i> Current Missions
+            </button>
+            <button id="show-archive-btn" class="neon-button view-mode-btn">
+                <i class="fas fa-archive"></i> Mission Archive
+            </button>
+        </div>
+
+        <form id="task-form" class="task-input-form">
+            <input type="text" id="task-input" placeholder="Enter new mission objectives..." required>
+            <div class="priority-selection">
+                <button type="button" class="priority-btn" data-priority="low">🟢 Low</button>
+                <button type="button" class="priority-btn active" data-priority="medium">🟠 Medium</button>
+                <button type="button" class="priority-btn" data-priority="high">🔴 High</button>
+            </div>
+            <input type="date" id="task-due-date" class="task-due-date-input" title="Set mission deadline">
+            <button type="submit" class="add-task-btn neon-button"><i class="fas fa-plus"></i> Add Mission</button>
+        </form>
+
+        <ul id="task-list" class="task-list">
+            <!-- Tasks will be dynamically loaded here by JavaScript -->
+        </ul>
+
+        <!-- Overdue Tasks Reminder (Hidden by default, shown by JS) -->
+        <div id="overdue-reminder" class="overdue-reminder hidden" role="alert">
+            <i class="fas fa-exclamation-triangle"></i> You have <span id="overdue-count">0</span> overdue missions! Prioritize!
+        </div>
+    </div>
+
+    <!-- Hidden audio element for sound effects -->
+    <audio id="completion-sound" src="assets/completion-sound.mp3" preload="auto"></audio>
+    <!-- REMINDER: Ensure 'assets/completion-sound.mp3' path is correct. -->
+
+    <script src="script.js"></script>
+</body>
+</html>

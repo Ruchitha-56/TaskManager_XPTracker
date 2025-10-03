@@ -1,0 +1,821 @@
+/* Global Styles & Variables */
+:root {
+    /* Dark Mode Colors (Default) */
+    --bg-color: #0d0c1d;
+    --text-color: #e0e0e0;
+    --primary-neon: #00ffcc; /* Cyan */
+    --secondary-neon: #ff00ff; /* Magenta */
+    --accent-neon: #ffeb3b; /* Yellow */
+    --high-priority: #ff3333; /* Red */
+    --medium-priority: #ff9900; /* Orange */
+    --low-priority: #00cc66; /* Green */
+    --input-bg: #1a1a2e;
+    --card-bg: #1c1c3a;
+    --border-color: #3a3a5e;
+    --glow-strength: 0 0 8px var(--primary-neon), 0 0 20px var(--primary-neon);
+    --button-hover-glow: 0 0 5px var(--secondary-neon), 0 0 15px var(--secondary-neon);
+    --shadow-color: rgba(0, 255, 204, 0.3);
+    --xp-fill-color: linear-gradient(90deg, #00ffcc, #00bfff);
+    --welcome-shadow: 0 0 15px var(--primary-neon), 0 0 30px var(--primary-neon); /* Stronger glow for welcome */
+    --overdue-color: #ff3333; /* For overdue tasks/reminders */
+}
+
+/* Light Mode Overrides */
+body.light-mode {
+    --bg-color: #f0f2f5;
+    --text-color: #333;
+    --primary-neon: #007bff; /* Blue */
+    --secondary-neon: #6f42c1; /* Purple */
+    --accent-neon: #ffc107; /* Gold */
+    --high-priority: #dc3545; /* Red */
+    --medium-priority: #fd7e14; /* Orange */
+    --low-priority: #28a745; /* Green */
+    --input-bg: #ffffff;
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+    --glow-strength: 0 0 3px rgba(0, 123, 255, 0.5);
+    --button-hover-glow: 0 0 5px rgba(111, 66, 193, 0.5);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --xp-fill-color: linear-gradient(90deg, #007bff, #28a745);
+    --welcome-shadow: 0 0 10px rgba(0, 123, 255, 0.5), 0 0 20px rgba(0, 123, 255, 0.3);
+    --overdue-color: #dc3545; /* Red */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Orbitron', sans-serif; /* Main UI font */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center content vertically */
+    padding: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Utility class for hiding elements */
+.hidden {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+/* Welcome Screen Styles */
+.welcome-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    box-shadow: var(--welcome-shadow); /* Stronger glow for welcome */
+    width: 100%;
+    max-width: 700px;
+    padding: 50px 30px;
+    transition: all 0.5s ease;
+    position: relative; /* For footer positioning */
+}
+
+.welcome-screen.hidden {
+    transform: translateY(-50px);
+}
+
+.welcome-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 2.5em;
+    text-shadow: var(--glow-strength);
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.welcome-message {
+    font-size: 1.2em;
+    margin-bottom: 30px; /* Reduced margin to fit steps */
+    max-width: 500px;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.welcome-steps {
+    width: 100%;
+    max-width: 450px;
+    text-align: left;
+    margin-bottom: 40px; /* Space before button */
+    border: 1px dashed var(--border-color);
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--input-bg);
+    box-shadow: inset 0 0 5px var(--primary-neon), 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-steps-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4em;
+    color: var(--accent-neon);
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px var(--accent-neon);
+}
+
+.welcome-steps-list {
+    list-style: none;
+    padding-left: 0;
+    font-size: 1em;
+}
+
+.welcome-steps-list li {
+    margin-bottom: 10px;
+    line-height: 1.4;
+    position: relative;
+    padding-left: 25px; /* Space for custom bullet */
+}
+
+.welcome-steps-list li::before {
+    content: '\2022'; /* Unicode bullet character */
+    color: var(--primary-neon);
+    font-size: 1.5em;
+    position: absolute;
+    left: 0;
+    top: -3px;
+    line-height: 1;
+}
+
+/* Specific priority colors within welcome text */
+.priority-high { color: var(--high-priority); font-weight: bold; }
+.priority-medium { color: var(--medium-priority); font-weight: bold; }
+.priority-low { color: var(--low-priority); font-weight: bold; }
+
+
+#enter-app-button {
+    background-color: var(--primary-neon);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 8px;
+    padding: 15px 30px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: var(--glow-strength);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+#enter-app-button:hover {
+    background-color: var(--secondary-neon);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--button-hover-glow);
+}
+
+#enter-app-button i {
+    margin-left: 10px;
+}
+
+.welcome-footer {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8em;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-family: 'Press Start 2P', cursive;
+    letter-spacing: 0.5px;
+    white-space: nowrap; /* Prevent breaking on small screens */
+}
+
+
+/* Main Task Manager Container (Existing styles, moved here for clarity) */
+.container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    box-shadow: var(--glow-strength);
+    width: 100%;
+    max-width: 800px;
+    padding: 30px;
+    margin-top: 50px;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+/* Header & Title */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+h1 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.8em;
+    text-shadow: var(--glow-strength);
+    letter-spacing: 2px;
+}
+
+.neon-text-main {
+    color: var(--primary-neon);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-button {
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    cursor: pointer;
+    color: var(--accent-neon);
+    transition: color 0.3s ease;
+}
+
+.theme-toggle-button:hover {
+    color: var(--secondary-neon);
+    text-shadow: var(--button-hover-glow);
+}
+
+/* XP Progress Bar */
+.xp-bar-section {
+    margin-bottom: 30px;
+}
+
+.xp-bar-container {
+    width: 100%;
+    height: 30px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    background: var(--xp-fill-color);
+    border-radius: 15px;
+    width: 0%;
+    transition: width 0.5s ease-out, background 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.xp-bar-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    line-height: 30px;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 0.9em;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+    z-index: 1; /* Ensure text is above fill */
+}
+
+/* New: View Mode Toggle Styles */
+.view-mode-toggle-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.view-mode-btn {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95em;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.view-mode-btn:hover {
+    border-color: var(--primary-neon);
+    box-shadow: 0 0 8px var(--primary-neon);
+    color: var(--primary-neon);
+}
+
+.view-mode-btn.active {
+    background-color: var(--primary-neon);
+    color: var(--bg-color);
+    border-color: var(--primary-neon);
+    box-shadow: var(--glow-strength);
+    transform: translateY(-2px);
+}
+
+.view-mode-btn.active:hover {
+    background-color: var(--secondary-neon);
+    border-color: var(--secondary-neon);
+    box-shadow: var(--button-hover-glow);
+}
+
+.view-mode-btn i {
+    margin-right: 8px;
+}
+
+/* Task Input Form */
+.task-input-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.task-input-form input[type="text"],
+.task-input-form input[type="date"] {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1em;
+    outline: none;
+    box-shadow: inset 0 0 5px var(--shadow-color);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    min-width: 150px;
+    cursor: text;
+}
+
+.task-due-date-input {
+    width: auto;
+    flex-shrink: 0;
+}
+
+.task-input-form input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    margin-left: 5px;
+    cursor: pointer;
+}
+body.light-mode .task-input-form input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0);
+}
+
+
+.task-input-form input[type="text"]:focus,
+.task-input-form input[type="date"]:focus {
+    border-color: var(--primary-neon);
+    box-shadow: inset 0 0 8px var(--primary-neon);
+}
+
+.priority-selection {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.priority-btn {
+    padding: 8px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+}
+
+.priority-btn:hover {
+    box-shadow: var(--button-hover-glow);
+    border-color: var(--secondary-neon);
+}
+
+.priority-btn.active {
+    background-color: var(--primary-neon);
+    color: var(--bg-color);
+    border-color: var(--primary-neon);
+    box-shadow: var(--glow-strength);
+}
+
+.priority-btn[data-priority="high"].active { background-color: var(--high-priority); border-color: var(--high-priority); }
+.priority-btn[data-priority="medium"].active { background-color: var(--medium-priority); border-color: var(--medium-priority); }
+.priority-btn[data-priority="low"].active { background-color: var(--low-priority); border-color: var(--low-priority); }
+
+.add-task-btn {
+    background-color: var(--primary-neon);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: var(--glow-strength);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
+}
+
+.add-task-btn:hover {
+    background-color: var(--secondary-neon);
+    transform: translateY(-2px);
+    box-shadow: var(--button-hover-glow);
+}
+
+.add-task-btn i {
+    margin-right: 8px;
+}
+
+/* Task List */
+.task-list {
+    list-style: none;
+    padding: 0;
+}
+
+.task-item {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    cursor: grab;
+    user-select: none;
+    opacity: 1; /* For animations */
+    transform: translateY(0);
+}
+
+.task-item.fade-out {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.task-item.dragging {
+    opacity: 0.6;
+    border: 2px dashed var(--primary-neon);
+    background-color: var(--input-bg);
+}
+
+.task-item.completed {
+    opacity: 0.6;
+    text-decoration: line-through;
+    filter: grayscale(0.5);
+    border-color: var(--low-priority);
+    box-shadow: 0 2px 5px var(--low-priority);
+}
+
+/* New: Archived task styling */
+.task-item.archived {
+    background-color: var(--input-bg); /* Slightly different background for archive items */
+    border-color: var(--border-color);
+    opacity: 0.8;
+    cursor: default; /* Not draggable in archive */
+    text-decoration: none; /* Remove line-through for archived list items themselves, keep for text */
+    filter: brightness(0.8);
+}
+.task-item.archived .task-text { /* Re-apply line-through for text in archived view */
+    text-decoration: line-through;
+}
+
+.task-item.archived .task-checkbox {
+    cursor: default; /* Not interactable in archive */
+}
+.task-item.archived .task-checkbox:hover {
+    border-color: var(--primary-neon); /* Keep base color */
+    box-shadow: none;
+}
+.task-item.archived .task-checkbox:checked {
+    background-color: var(--primary-neon);
+    border-color: var(--primary-neon);
+}
+
+/* Overdue task styling */
+.task-item.overdue {
+    border-color: var(--overdue-color);
+    box-shadow: 0 0 10px var(--overdue-color), inset 0 0 5px var(--overdue-color);
+    animation: pulse-red 1.5s infinite alternate; /* Subtle pulse for overdue */
+}
+
+@keyframes pulse-red {
+    from { box-shadow: 0 0 10px var(--overdue-color), inset 0 0 5px var(--overdue-color); }
+    to { box-shadow: 0 0 15px var(--overdue-color), inset 0 0 8px var(--overdue-color); }
+}
+
+.task-checkbox {
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    min-width: 25px; /* Ensure it doesn't shrink */
+    min-height: 25px;
+    border: 2px solid var(--primary-neon);
+    border-radius: 5px;
+    background-color: var(--input-bg);
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.task-checkbox:hover {
+    border-color: var(--secondary-neon);
+    box-shadow: 0 0 5px var(--secondary-neon);
+}
+
+.task-checkbox:checked {
+    background-color: var(--primary-neon);
+    border-color: var(--primary-neon);
+}
+
+.task-checkbox:checked::before {
+    content: '\f00c'; /* Font Awesome check icon */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: var(--bg-color);
+    font-size: 1.2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.task-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent long text from breaking layout */
+}
+
+.task-text {
+    font-size: 1.1em;
+    word-wrap: break-word;
+    margin-bottom: 5px;
+}
+
+.task-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+.task-priority-label {
+    font-size: 0.75em;
+    padding: 3px 8px;
+    border-radius: 15px;
+    display: inline-block;
+    color: var(--bg-color);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 3px;
+}
+
+.task-priority-label.high { background-color: var(--high-priority); }
+.task-priority-label.medium { background-color: var(--medium-priority); }
+.task-priority-label.low { background-color: var(--low-priority); }
+
+.task-due-date {
+    font-size: 0.85em;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.task-due-date.overdue-text {
+    color: var(--overdue-color);
+    font-weight: bold;
+    text-shadow: 0 0 3px var(--overdue-color);
+}
+
+/* New: Task Completion Date styling */
+.task-completion-date {
+    font-size: 0.85em;
+    color: var(--primary-neon); /* Use a neon color for completion date */
+    opacity: 0.8;
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.task-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0; /* Prevent actions from shrinking */
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: color 0.2s ease, background-color 0.2s ease, text-shadow 0.2s ease;
+}
+
+body:not(.light-mode) .icon-button:hover {
+    background-color: rgba(0, 255, 204, 0.1); /* Using primary neon for dark mode */
+}
+body.light-mode .icon-button:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Using primary neon for light mode */
+}
+
+
+.edit-button:hover { color: var(--secondary-neon); text-shadow: 0 0 5px var(--secondary-neon); }
+.delete-button:hover { color: var(--high-priority); text-shadow: 0 0 5px var(--high-priority); }
+
+/* Overdue Reminder Banner */
+.overdue-reminder {
+    background-color: var(--overdue-color);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    box-shadow: 0 0 15px var(--overdue-color);
+    animation: pulse-red-bg 2s infinite alternate;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+@keyframes pulse-red-bg {
+    from { box-shadow: 0 0 15px var(--overdue-color); }
+    to { box-shadow: 0 0 25px var(--overdue-color); }
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container, .welcome-screen {
+        padding: 20px;
+        margin-top: 20px;
+    }
+    h1, .welcome-title {
+        font-size: 1.4em;
+    }
+    .welcome-message {
+        font-size: 1em;
+    }
+    .welcome-steps {
+        padding: 15px;
+    }
+    .welcome-steps-title {
+        font-size: 1.2em;
+    }
+    .welcome-steps-list li {
+        font-size: 0.95em;
+    }
+    #enter-app-button {
+        font-size: 1em;
+        padding: 12px 25px;
+    }
+    .welcome-footer {
+        font-size: 0.7em;
+        bottom: 10px;
+    }
+    .view-mode-toggle-container {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .view-mode-btn {
+        flex-grow: 1; /* Allow buttons to expand */
+        min-width: unset;
+    }
+    .task-input-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .task-input-form input[type="text"],
+    .task-input-form input[type="date"] {
+        min-width: auto; /* Allow full width for inputs */
+        width: 100%;
+    }
+    .priority-selection {
+        justify-content: center;
+    }
+    .add-task-btn {
+        width: 100%;
+    }
+    .task-item {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .task-content {
+        flex-basis: 100%; /* Take full width on smaller screens */
+    }
+    .task-actions {
+        margin-left: auto; /* Push actions to the right if content wraps */
+    }
+    .task-meta {
+        justify-content: center; /* Center priority and date */
+        width: 100%;
+    }
+    .overdue-reminder {
+        font-size: 1em;
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1, .welcome-title {
+        font-size: 1.2em;
+    }
+    .theme-toggle-button {
+        font-size: 1.5em;
+    }
+    .welcome-message {
+        font-size: 0.9em;
+    }
+    .welcome-steps-title {
+        font-size: 1em;
+    }
+    .welcome-steps-list li {
+        font-size: 0.9em;
+        padding-left: 20px;
+    }
+    .welcome-steps-list li::before {
+        font-size: 1.2em;
+        top: 0;
+    }
+    #enter-app-button {
+        font-size: 0.9em;
+        padding: 10px 20px;
+    }
+    .welcome-footer {
+        font-size: 0.6em;
+        bottom: 5px;
+    }
+    .view-mode-btn {
+        font-size: 0.85em;
+        padding: 8px 10px;
+    }
+    .view-mode-btn i {
+        margin-right: 5px;
+    }
+    .task-input-form input[type="text"],
+    .task-input-form input[type="date"] {
+        font-size: 0.9em;
+    }
+    .priority-btn {
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
+    .add-task-btn {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+    .task-item {
+        padding: 12px 15px;
+    }
+    .task-text {
+        font-size: 1em;
+    }
+    .task-priority-label, .task-due-date, .task-completion-date {
+        font-size: 0.7em;
+    }
+    .task-checkbox {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+        min-height: 22px;
+    }
+    .task-checkbox:checked::before {
+        font-size: 1em;
+    }
+    .icon-button {
+        font-size: 1.1em;
+    }
+}
